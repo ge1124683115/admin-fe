@@ -1,7 +1,7 @@
+const path              = require('path');
+const webpack           = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const webpack           = require('webpack');
-const path              = require('path');
 
 module.exports = {
    entry: './src/app.jsx',
@@ -10,21 +10,14 @@ module.exports = {
       publicPath: "/dist/",
       filename: 'js/app.js'
    },
-   devServer: {
-      port : '8088'
+   resolve: {
+      alias: {
+         page      : path.resolve(__dirname, "src/page"),
+         component : path.resolve(__dirname, "src/component")
+      }
    },
    module: {
       rules: [
-         {
-            test: /\.jsx$/,
-            exclude: /(node_modules)/,
-            use: {
-               loader: 'babel-loader',
-               options: {
-                  presets: ['env','react']
-               }
-            }
-         },
          {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
@@ -63,17 +56,37 @@ module.exports = {
                   }
                }
             ]
+         },
+         {
+            test: /\.jsx$/,
+            exclude: /(node_modules)/,
+            use: {
+               loader: 'babel-loader',
+               options: {
+                  presets: ['env','react']
+               }
+            }
          }
       ]
    },
    plugins: [
+      //处理html文件
       new HtmlWebpackPlugin({
-         template: 'src/index.html'
+         template: './src/index.html',
+         favicon: './favicon.ico'
       }),
+      //打包css文件
       new ExtractTextPlugin("css/[name].css"),
+      //提取公共模块
       new webpack.optimize.CommonsChunkPlugin({
          name : 'common',
          filename:'js/base.js'
       })
-   ]
+   ],
+   devServer: {
+      port : 8088,
+      historyApiFallback : {
+         index : '/dist/index.html'
+      }
+   }
 };
