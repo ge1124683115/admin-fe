@@ -107,6 +107,22 @@ class Product{
          data : categoryListInfo
       });
    }
+   //修改品类名字
+   updateCategoryName(category){
+      return _mm.request({
+         type : 'post',
+         url  : '/manage/category/set_category_name.do',
+         data : category
+      });
+   }
+   //新增加品类
+   saveCategory(category){
+      return _mm.request({
+         type : 'post',
+         url  : '/manage/category/add_category.do',
+         data : category
+      })
+   }
 }
 
 export default Product;
