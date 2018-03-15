@@ -94,11 +94,3 @@ class Login extends React.Component{
 }
 
 export default Login;
-
-var a = {
-   user : 'xiaowang',
-   fn : function () {
-      console.log(this.user);
-   }
-}
-a.fn();
